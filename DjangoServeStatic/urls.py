@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 from . import  settings 
+from django.views.generic import RedirectView
 
 FrontendView = TemplateView.as_view(
     template_name=f'{settings.AngularServeApp}/index.html')   
@@ -25,4 +26,6 @@ FrontendView = TemplateView.as_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^serve-angular/.*$(?i)', FrontendView),
+    
+    re_path(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
 ]
